@@ -10,9 +10,10 @@ import { Link } from "react-router-dom";
 
 const sampleMods = [
   {
-    id: 1,
+    id: "1",
     title: "KTM 450 SX-F 2024",
     author: "MXRider_Pro",
+    authorId: "author1",
     category: "Байки",
     downloads: 1547,
     rating: 4.8,
@@ -20,12 +21,15 @@ const sampleMods = [
     description: "Полностью детализированный KTM 450 SX-F 2024 с реалистичной физикой и звуком двигателя",
     fileSize: "25.6 MB",
     isNew: true,
-    isPremium: false
+    isPremium: false,
+    price: 299,
+    modType: "paid" as const
   },
   {
-    id: 2,
+    id: "2",
     title: "Pro Racing Gear Pack",
     author: "GearMaster",
+    authorId: "author2",
     category: "Экипировка",
     downloads: 892,
     rating: 4.6,
@@ -33,12 +37,15 @@ const sampleMods = [
     description: "Набор профессиональной экипировки с реальными брендами и кастомизацией",
     fileSize: "18.2 MB",
     isNew: false,
-    isPremium: true
+    isPremium: true,
+    price: 150,
+    modType: "donation" as const
   },
   {
-    id: 3,
+    id: "3",
     title: "Supercross Arena 2024",
     author: "TrackBuilder",
+    authorId: "author3",
     category: "Трассы",
     downloads: 2341,
     rating: 4.9,
@@ -46,7 +53,9 @@ const sampleMods = [
     description: "Официальная арена супермотокросса с реалистичными препятствиями и атмосферой",
     fileSize: "45.8 MB",
     isNew: true,
-    isPremium: false
+    isPremium: false,
+    price: 0,
+    modType: "free" as const
   },
   {
     id: 4,
@@ -281,7 +290,23 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {sortedMods.map((mod) => (
-              <ModCard key={mod.id} {...mod} />
+              <ModCard 
+                key={mod.id} 
+                id={mod.id}
+                title={mod.title}
+                author={mod.author}
+                authorId={mod.authorId}
+                category={mod.category}
+                downloads={mod.downloads}
+                rating={mod.rating}
+                image={mod.image}
+                description={mod.description}
+                fileSize={mod.fileSize}
+                isNew={mod.isNew}
+                isPremium={mod.isPremium}
+                price={mod.price}
+                modType={mod.modType}
+              />
             ))}
           </div>
           

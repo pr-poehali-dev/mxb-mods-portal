@@ -1,11 +1,15 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Icon from "@/components/ui/icon";
+import PurchaseModal from "@/components/PurchaseModal";
 
 interface ModCardProps {
+  id: string;
   title: string;
   author: string;
+  authorId: string;
   category: string;
   downloads: number;
   rating: number;
@@ -14,11 +18,15 @@ interface ModCardProps {
   fileSize: string;
   isNew?: boolean;
   isPremium?: boolean;
+  price?: number;
+  modType?: 'free' | 'paid' | 'donation';
 }
 
 export default function ModCard({
+  id,
   title,
   author,
+  authorId,
   category,
   downloads,
   rating,
@@ -27,7 +35,20 @@ export default function ModCard({
   fileSize,
   isNew = false,
   isPremium = false,
+  price = 0,
+  modType = 'free',
 }: ModCardProps) {
+  const [isPurchaseModalOpen, setIsPurchaseModalOpen] = useState(false);
+  
+  const handleDownloadClick = () => {
+    if (modType === 'free') {
+      // Прямое скачивание для бесплатных модов
+      console.log('Скачивание бесплатного мода:', title);
+    } else {
+      // Открыть модальное окно покупки
+      setIsPurchaseModalOpen(true);
+    }
+  };
   return (
     <Card className="group hover:shadow-lg transition-all duration-300 border-border/50 hover:border-orange/30 bg-card/80 backdrop-blur">
       <CardHeader className="p-0 relative overflow-hidden">
@@ -94,10 +115,30 @@ export default function ModCard({
       </CardContent>
       
       <CardFooter className="p-4 pt-0 space-y-2">
-        <Button className="w-full bg-orange hover:bg-orange-600 text-white font-orbitron font-medium">
-          <Icon name="Download" size={16} className="mr-2" />
-          СКАЧАТЬ
+        {/* Цена для платных модов */}
+        {modType !== 'free' && (
+          <div className="flex items-center justify-between w-full">
+            <span className="text-sm text-muted-foreground">
+              {modType === 'paid' ? 'Цена:' : 'Мин. донат:'}
+            </span>
+            <Badge className="bg-green-100 text-green-800 font-semibold">
+              {price} ₽
+            </Badge>
+          </div>
+        )}
+        
+        <Button 
+          onClick={handleDownloadClick}
+          className="w-full bg-orange hover:bg-orange-600 text-white font-orbitron font-medium"
+        >
+          <Icon 
+            name={modType === 'free' ? 'Download' : modType === 'paid' ? 'ShoppingCart' : 'Gift'} 
+            size={16} 
+            className="mr-2" 
+          />
+          {modType === 'free' ? 'СКАЧАТЬ' : modType === 'paid' ? 'КУПИТЬ' : 'ПОДДЕРЖАТЬ'}
         </Button>
+        
         <div className="flex gap-2 w-full">
           <Button variant="outline" size="sm" className="flex-1">
             <Icon name="Eye" size={14} className="mr-1" />
@@ -109,6 +150,21 @@ export default function ModCard({
           </Button>
         </div>
       </CardFooter>
+      
+      {/* Модальное окно покупки */}
+      <PurchaseModal
+        isOpen={isPurchaseModalOpen}
+        onClose={() => setIsPurchaseModalOpen(false)}
+        mod={{
+          id,
+          title,
+          author,
+          authorId,
+          price,
+          type: modType as 'paid' | 'donation',
+          image,
+        }}
+      />
     </Card>
   );
 }
