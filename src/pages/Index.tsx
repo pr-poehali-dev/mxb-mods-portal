@@ -198,7 +198,7 @@ const Index = () => {
       {/* Hero Section */}
       <section className="relative h-[600px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-orange/20 via-background to-blue/20" />
-        <div className="absolute inset-0 bg-[url('/img/5c250c11-5dcd-4474-84e8-88f5d87595e2.jpg')] bg-cover bg-center opacity-20" />
+        <div className="absolute inset-0 bg-[url('https://cdn.poehali.dev/files/2301781c-3a41-4aea-96b0-50ddd5cc78b4.JPG')] bg-cover bg-center opacity-30" />
         
         <div className="relative z-10 text-center space-y-6 max-w-4xl mx-auto px-4">
           <h2 className="font-orbitron font-bold text-5xl md:text-7xl bg-gradient-to-r from-orange via-white to-blue bg-clip-text text-transparent">
