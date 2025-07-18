@@ -12,6 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import Icon from "@/components/ui/icon";
 import { useToast } from "@/hooks/use-toast";
+import { sanitizeInput, isValidInput, isValidFileUpload, sanitizeFormData } from "@/utils/security";
 
 export default function Upload() {
   const [title, setTitle] = useState("");
@@ -46,6 +47,7 @@ export default function Upload() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    // Проверка безопасности данных
     if (!title || !description || !category || !file || !preview || !agreeTerms) {
       toast({
         title: "Ошибка",
@@ -54,6 +56,36 @@ export default function Upload() {
       });
       return;
     }
+
+    // Валидация входных данных
+    if (!isValidInput(title) || !isValidInput(description) || !isValidInput(tags)) {
+      toast({
+        title: "Ошибка безопасности",
+        description: "Обнаружены подозрительные символы в данных",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Проверка файла
+    if (!isValidFileUpload(file)) {
+      toast({
+        title: "Ошибка файла",
+        description: "Недопустимый тип файла или размер превышает 100MB",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Очистка данных
+    const cleanData = sanitizeFormData({
+      title,
+      description,
+      tags,
+      category,
+      modPrice: parseFloat(modPrice) || 0,
+      minDonation
+    });
 
     setIsUploading(true);
     setUploadProgress(0);

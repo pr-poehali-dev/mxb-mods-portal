@@ -134,7 +134,7 @@ const Index = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <h1 className="font-orbitron font-bold text-2xl bg-gradient-to-r from-orange to-blue bg-clip-text text-transparent">
-                MX BIKES MODS
+                MXB SHOP RUSSIA
               </h1>
               <Badge variant="secondary" className="bg-orange/20 text-orange">
                 Beta

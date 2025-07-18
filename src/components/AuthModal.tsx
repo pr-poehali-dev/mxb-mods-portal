@@ -6,6 +6,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Checkbox } from "@/components/ui/checkbox";
 import Icon from "@/components/ui/icon";
+import { sanitizeInput, isValidInput, isStrongPassword, rateLimiter, generateCSRFToken } from "@/utils/security";
 
 interface AuthModalProps {
   open: boolean;
@@ -14,10 +15,34 @@ interface AuthModalProps {
 
 export default function AuthModal({ open, onOpenChange }: AuthModalProps) {
   const [isLoading, setIsLoading] = useState(false);
+  const [loginAttempts, setLoginAttempts] = useState(0);
+  const [csrfToken] = useState(generateCSRFToken());
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    const formData = new FormData(e.target as HTMLFormElement);
+    const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
+    
+    // Проверка безопасности
+    if (!email || !password) {
+      alert('Заполните все поля');
+      return;
+    }
+    
+    if (!isValidInput(email) || !isValidInput(password)) {
+      alert('Обнаружены подозрительные символы в данных');
+      return;
+    }
+    
+    if (!rateLimiter.isAllowed('user-ip')) {
+      alert('Слишком много попыток входа. Попробуйте через 15 минут');
+      return;
+    }
+    
     setIsLoading(true);
+    setLoginAttempts(prev => prev + 1);
+    
     // Имитация авторизации
     setTimeout(() => {
       setIsLoading(false);
@@ -29,7 +54,34 @@ export default function AuthModal({ open, onOpenChange }: AuthModalProps) {
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
+    const formData = new FormData(e.target as HTMLFormElement);
+    const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
+    const confirmPassword = formData.get('confirmPassword') as string;
+    
+    // Проверка безопасности
+    if (!email || !password || !confirmPassword) {
+      alert('Заполните все поля');
+      return;
+    }
+    
+    if (!isValidInput(email) || !isValidInput(password)) {
+      alert('Обнаружены подозрительные символы в данных');
+      return;
+    }
+    
+    if (!isStrongPassword(password)) {
+      alert('Пароль должен содержать минимум 8 символов, включая заглавные и строчные буквы, цифры и специальные символы');
+      return;
+    }
+    
+    if (password !== confirmPassword) {
+      alert('Пароли не совпадают');
+      return;
+    }
+    
     setIsLoading(true);
+    
     // Имитация регистрации
     setTimeout(() => {
       setIsLoading(false);
@@ -42,7 +94,7 @@ export default function AuthModal({ open, onOpenChange }: AuthModalProps) {
       <DialogContent className="sm:max-w-md bg-background/95 backdrop-blur border-border/50">
         <DialogHeader className="text-center space-y-2">
           <DialogTitle className="font-orbitron font-bold text-2xl bg-gradient-to-r from-orange to-blue bg-clip-text text-transparent">
-            MX BIKES MODS
+            MXB SHOP RUSSIA
           </DialogTitle>
           <DialogDescription className="text-muted-foreground">
             Войдите в свой аккаунт или создайте новый для загрузки модов
