@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import Icon from "@/components/ui/icon";
 import ModCard from "@/components/ModCard";
 import AuthModal from "@/components/AuthModal";
+import { Link } from "react-router-dom";
 
 const sampleMods = [
   {
@@ -132,18 +133,21 @@ const Index = () => {
             </div>
             
             <nav className="hidden md:flex items-center space-x-6">
-              <a href="/" className="font-orbitron text-sm hover:text-orange transition-colors">
+              <Link to="/" className="font-orbitron text-sm hover:text-orange transition-colors">
                 Главная
-              </a>
-              <a href="/upload" className="font-orbitron text-sm hover:text-orange transition-colors">
+              </Link>
+              <Link to="/upload" className="font-orbitron text-sm hover:text-orange transition-colors">
                 Загрузить
-              </a>
-              <a href="/profile" className="font-orbitron text-sm hover:text-orange transition-colors">
+              </Link>
+              <Link to="/profile" className="font-orbitron text-sm hover:text-orange transition-colors">
                 Профиль
-              </a>
-              <a href="/admin" className="font-orbitron text-sm hover:text-orange transition-colors">
+              </Link>
+              <Link to="/payment-instructions" className="font-orbitron text-sm hover:text-orange transition-colors">
+                💳 Пополнение
+              </Link>
+              <Link to="/admin" className="font-orbitron text-sm hover:text-orange transition-colors">
                 Админ
-              </a>
+              </Link>
             </nav>
             
             <div className="flex items-center space-x-3">

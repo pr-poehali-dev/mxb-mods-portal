@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import Icon from "@/components/ui/icon";
 import { mockUser, updateBalance } from "@/lib/auth";
 import { useToast } from "@/hooks/use-toast";
+import { Link } from "react-router-dom";
 
 export default function Profile() {
   const [user, setUser] = useState(mockUser);
@@ -194,6 +195,15 @@ export default function Profile() {
                             </Button>
                           ))}
                         </div>
+                      </div>
+                      
+                      <div className="text-center">
+                        <Button variant="outline" size="sm" asChild>
+                          <Link to="/payment-instructions">
+                            <Icon name="Info" size={16} className="mr-2" />
+                            Подробные инструкции по пополнению
+                          </Link>
+                        </Button>
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="payment">Способ оплаты</Label>
