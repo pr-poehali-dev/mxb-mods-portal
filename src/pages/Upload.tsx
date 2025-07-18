@@ -8,6 +8,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Separator } from "@/components/ui/separator";
 import Icon from "@/components/ui/icon";
 import { useToast } from "@/hooks/use-toast";
 
@@ -21,6 +23,10 @@ export default function Upload() {
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [agreeTerms, setAgreeTerms] = useState(false);
+  const [modType, setModType] = useState("free"); // free, paid, donation
+  const [modPrice, setModPrice] = useState("");
+  const [minDonation, setMinDonation] = useState("50");
+  const [allowReviews, setAllowReviews] = useState(true);
   const { toast } = useToast();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,6 +76,10 @@ export default function Upload() {
           setFile(null);
           setPreview(null);
           setAgreeTerms(false);
+          setModType("free");
+          setModPrice("");
+          setMinDonation("50");
+          setAllowReviews(true);
           return 100;
         }
         return prev + 10;
@@ -93,7 +103,7 @@ export default function Upload() {
               </h1>
             </div>
             <Badge className="bg-blue/20 text-blue">
-              Бесплатно
+              Загрузка мода
             </Badge>
           </div>
         </div>
@@ -223,6 +233,128 @@ export default function Upload() {
                         )}
                       </div>
                     </div>
+                  </div>
+                </div>
+
+                {/* Монетизация */}
+                <div className="space-y-4">
+                  <h3 className="font-orbitron font-semibold text-lg">Монетизация</h3>
+                  
+                  <Tabs value={modType} onValueChange={setModType}>
+                    <TabsList className="grid w-full grid-cols-3">
+                      <TabsTrigger value="free">Бесплатно</TabsTrigger>
+                      <TabsTrigger value="paid">Платно</TabsTrigger>
+                      <TabsTrigger value="donation">Донаты</TabsTrigger>
+                    </TabsList>
+                    
+                    <TabsContent value="free" className="space-y-3">
+                      <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                        <div className="flex items-center space-x-2 mb-2">
+                          <Icon name="Heart" size={16} className="text-green-600" />
+                          <span className="font-medium text-green-800">Бесплатный мод</span>
+                        </div>
+                        <p className="text-sm text-green-700">
+                          Мод будет доступен для скачивания всем пользователям бесплатно.
+                          Вы получите репутацию в сообществе и обратную связь от игроков.
+                        </p>
+                      </div>
+                    </TabsContent>
+                    
+                    <TabsContent value="paid" className="space-y-3">
+                      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                        <div className="flex items-center space-x-2 mb-2">
+                          <Icon name="DollarSign" size={16} className="text-blue-600" />
+                          <span className="font-medium text-blue-800">Платный мод</span>
+                        </div>
+                        <p className="text-sm text-blue-700 mb-3">
+                          Пользователи смогут скачать мод только после оплаты.
+                          Вы получите 70% от стоимости, 30% — комиссия сервиса.
+                        </p>
+                        <div className="space-y-2">
+                          <Label htmlFor="price">Цена мода (₽)</Label>
+                          <Input
+                            id="price"
+                            type="number"
+                            min="50"
+                            max="5000"
+                            value={modPrice}
+                            onChange={(e) => setModPrice(e.target.value)}
+                            placeholder="199"
+                          />
+                          <p className="text-xs text-blue-600">
+                            Минимальная цена: 50 ₽ • Максимальная цена: 5000 ₽
+                          </p>
+                        </div>
+                      </div>
+                    </TabsContent>
+                    
+                    <TabsContent value="donation" className="space-y-3">
+                      <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                        <div className="flex items-center space-x-2 mb-2">
+                          <Icon name="Gift" size={16} className="text-purple-600" />
+                          <span className="font-medium text-purple-800">Донаты</span>
+                        </div>
+                        <p className="text-sm text-purple-700 mb-3">
+                          Мод бесплатен, но пользователи могут поддержать вас донатом.
+                          Вы получите 85% от суммы доната, 15% — комиссия сервиса.
+                        </p>
+                        <div className="space-y-2">
+                          <Label htmlFor="minDonation">Минимальная сумма доната (₽)</Label>
+                          <Select value={minDonation} onValueChange={setMinDonation}>
+                            <SelectTrigger>
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="50">50 ₽</SelectItem>
+                              <SelectItem value="100">100 ₽</SelectItem>
+                              <SelectItem value="200">200 ₽</SelectItem>
+                              <SelectItem value="500">500 ₽</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </div>
+                    </TabsContent>
+                  </Tabs>
+                </div>
+
+                {/* Отзывы и рейтинг */}
+                <div className="space-y-4">
+                  <h3 className="font-orbitron font-semibold text-lg">Отзывы и рейтинг</h3>
+                  
+                  <div className="bg-muted/30 p-4 rounded-lg">
+                    <div className="flex items-center space-x-2 mb-3">
+                      <Checkbox 
+                        id="reviews" 
+                        checked={allowReviews}
+                        onCheckedChange={setAllowReviews}
+                      />
+                      <Label htmlFor="reviews" className="font-medium">
+                        Разрешить отзывы и рейтинг
+                      </Label>
+                    </div>
+                    
+                    {allowReviews && (
+                      <div className="space-y-2">
+                        <div className="flex items-center space-x-2">
+                          <Icon name="MessageSquare" size={16} className="text-blue-500" />
+                          <span className="text-sm">Пользователи смогут оставлять отзывы</span>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Icon name="Star" size={16} className="text-yellow-500" />
+                          <span className="text-sm">Пользователи смогут оценивать мод от 1 до 5 звёзд</span>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Icon name="TrendingUp" size={16} className="text-green-500" />
+                          <span className="text-sm">Рейтинг влияет на позицию в поиске</span>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {!allowReviews && (
+                      <div className="text-sm text-muted-foreground">
+                        Отзывы будут отключены. Пользователи не смогут оставлять комментарии и оценки.
+                      </div>
+                    )}
                   </div>
                 </div>
 
