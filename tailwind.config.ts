@@ -61,28 +61,7 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				},
-				// MX Bikes theme colors
-				orange: {
-					DEFAULT: '#FF6B35',
-					50: '#FFF4F0',
-					100: '#FFE8DF',
-					500: '#FF6B35',
-					600: '#E5552B',
-					700: '#CC4A26'
-				},
-				blue: {
-					DEFAULT: '#00D4FF',
-					50: '#E6F9FF',
-					100: '#CCF3FF',
-					500: '#00D4FF',
-					600: '#00BFE6',
-					700: '#00A6CC'
 				}
-			},
-			fontFamily: {
-				'orbitron': ['Orbitron', 'sans-serif'],
-				'roboto': ['Roboto', 'sans-serif']
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
