@@ -12,6 +12,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import Icon from "@/components/ui/icon";
 import { useToast } from "@/hooks/use-toast";
+import { Link } from "react-router-dom";
 
 interface User {
   id: string;
@@ -158,10 +159,18 @@ export default function Admin() {
                 Админ-панель
               </h1>
             </div>
+            <div className="flex items-center space-x-2">
+              <Button asChild variant="outline" size="sm">
+                <Link to="/">
+                  <Icon name="Home" size={16} className="mr-2" />
+                  На главную
+                </Link>
+              </Button>
             <Badge className="bg-red-500/20 text-red-400">
               <Icon name="Shield" size={14} className="mr-1" />
               Полный доступ
             </Badge>
+            </div>
           </div>
         </div>
       </header>

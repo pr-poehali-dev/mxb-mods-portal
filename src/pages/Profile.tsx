@@ -91,6 +91,12 @@ export default function Profile() {
                 Профиль
               </h1>
             </div>
+            <Button asChild variant="outline" size="sm">
+              <Link to="/">
+                <Icon name="Home" size={16} className="mr-2" />
+                На главную
+              </Link>
+            </Button>
             {user.role === 'admin' && (
               <Badge className="bg-red-500/20 text-red-400">
                 <Icon name="Shield" size={14} className="mr-1" />

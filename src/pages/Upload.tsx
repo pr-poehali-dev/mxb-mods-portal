@@ -102,6 +102,10 @@ export default function Upload() {
                 Загрузка мода
               </h1>
             </div>
+            <Button variant="outline" size="sm" onClick={() => window.location.href = '/'}>
+              <Icon name="Home" size={16} className="mr-2" />
+              На главную
+            </Button>
             <Badge className="bg-blue/20 text-blue">
               Загрузка мода
             </Badge>

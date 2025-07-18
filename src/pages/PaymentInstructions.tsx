@@ -346,12 +346,18 @@ const PaymentInstructions: React.FC = () => {
           </CardContent>
         </Card>
 
-        {/* Кнопка возврата */}
-        <div className="text-center mt-8">
+        {/* Кнопки навигации */}
+        <div className="flex justify-center gap-4 mt-8">
           <Button asChild className="bg-blue-600 hover:bg-blue-700">
             <Link to="/profile">
               <Icon name="ArrowLeft" size={16} className="mr-2" />
               Вернуться к профилю
+            </Link>
+          </Button>
+          <Button asChild variant="outline">
+            <Link to="/">
+              <Icon name="Home" size={16} className="mr-2" />
+              На главную
             </Link>
           </Button>
         </div>
