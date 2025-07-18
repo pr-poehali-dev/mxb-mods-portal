@@ -22,6 +22,8 @@ export default function AuthModal({ open, onOpenChange }: AuthModalProps) {
     setTimeout(() => {
       setIsLoading(false);
       onOpenChange(false);
+      // Перенаправляем на профиль после входа
+      window.location.href = '/profile';
     }, 2000);
   };
 

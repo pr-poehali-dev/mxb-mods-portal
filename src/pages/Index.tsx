@@ -132,17 +132,17 @@ const Index = () => {
             </div>
             
             <nav className="hidden md:flex items-center space-x-6">
-              <a href="#" className="font-orbitron text-sm hover:text-orange transition-colors">
+              <a href="/" className="font-orbitron text-sm hover:text-orange transition-colors">
                 Главная
               </a>
-              <a href="#" className="font-orbitron text-sm hover:text-orange transition-colors">
-                Каталог
+              <a href="/upload" className="font-orbitron text-sm hover:text-orange transition-colors">
+                Загрузить
               </a>
-              <a href="#" className="font-orbitron text-sm hover:text-orange transition-colors">
-                Создатели
+              <a href="/profile" className="font-orbitron text-sm hover:text-orange transition-colors">
+                Профиль
               </a>
-              <a href="#" className="font-orbitron text-sm hover:text-orange transition-colors">
-                Помощь
+              <a href="/admin" className="font-orbitron text-sm hover:text-orange transition-colors">
+                Админ
               </a>
             </nav>
             
