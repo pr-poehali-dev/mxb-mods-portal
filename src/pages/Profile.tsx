@@ -31,31 +31,42 @@ export default function Profile() {
 
     setIsProcessing(true);
     
-    // Симуляция обработки платежа
-    setTimeout(() => {
-      const amount = parseFloat(topupAmount);
-      updateBalance(amount);
-      setUser(prev => ({
-        ...prev,
-        balance: prev.balance + amount
-      }));
-      
-      toast({
-        title: "Успех!",
-        description: `Баланс пополнен на ${amount} ₽`,
-      });
-      
-      setTopupAmount("");
-      setPaymentMethod("");
-      setIsProcessing(false);
-    }, 2000);
+    if (paymentMethod === 'tbank') {
+      // Для Т-Банк показываем инструкции
+      setTimeout(() => {
+        toast({
+          title: "Инструкции отправлены",
+          description: `Переведите ${topupAmount} ₽ на номер +7 (912) 664-79-18 с комментарием "Пополнение баланса #${user.id}"`,
+        });
+        setIsProcessing(false);
+      }, 1000);
+    } else {
+      // Симуляция обработки других платежей
+      setTimeout(() => {
+        const amount = parseFloat(topupAmount);
+        updateBalance(amount);
+        setUser(prev => ({
+          ...prev,
+          balance: prev.balance + amount
+        }));
+        
+        toast({
+          title: "Успех!",
+          description: `Баланс пополнен на ${amount} ₽`,
+        });
+        
+        setTopupAmount("");
+        setPaymentMethod("");
+        setIsProcessing(false);
+      }, 2000);
+    }
   };
 
   const recentTransactions = [
-    { id: 1, type: "topup", amount: 500, date: "2024-01-15", description: "Пополнение через карту" },
+    { id: 1, type: "topup", amount: 500, date: "2024-01-15", description: "Пополнение через Т-Банк" },
     { id: 2, type: "purchase", amount: -50, date: "2024-01-14", description: "Покупка премиум мода" },
     { id: 3, type: "earning", amount: 150, date: "2024-01-13", description: "Продажа мода KTM 450" },
-    { id: 4, type: "topup", amount: 1000, date: "2024-01-10", description: "Пополнение через PayPal" }
+    { id: 4, type: "topup", amount: 1000, date: "2024-01-10", description: "Пополнение через Т-Банк" }
   ];
 
   const userMods = [
@@ -191,6 +202,7 @@ export default function Profile() {
                             <SelectValue placeholder="Выберите способ оплаты" />
                           </SelectTrigger>
                           <SelectContent>
+                            <SelectItem value="tbank">Т-Банк (по номеру телефона)</SelectItem>
                             <SelectItem value="card">Банковская карта</SelectItem>
                             <SelectItem value="paypal">PayPal</SelectItem>
                             <SelectItem value="crypto">Криптовалюта</SelectItem>
@@ -198,6 +210,41 @@ export default function Profile() {
                           </SelectContent>
                         </Select>
                       </div>
+                      
+                      {/* Т-Банк инструкции */}
+                      {paymentMethod === 'tbank' && (
+                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 space-y-3">
+                          <div className="flex items-center space-x-2">
+                            <Icon name="Phone" size={16} className="text-blue-600" />
+                            <span className="font-medium text-blue-900">Перевод через Т-Банк</span>
+                          </div>
+                          <div className="space-y-2 text-sm text-blue-800">
+                            <p><strong>Номер телефона:</strong> +7 (912) 664-79-18</p>
+                            <p><strong>Получатель:</strong> Администрация MX Bikes Mods</p>
+                            <p><strong>Сумма:</strong> {topupAmount} ₽</p>
+                            <p><strong>Комментарий:</strong> Пополнение баланса #{user.id}</p>
+                          </div>
+                          <div className="border-t border-blue-200 pt-3">
+                            <p className="text-xs text-blue-600">
+                              💡 <strong>Как пополнить:</strong>
+                            </p>
+                            <ol className="text-xs text-blue-600 space-y-1 mt-2">
+                              <li>1. Откройте приложение Т-Банк</li>
+                              <li>2. Выберите "Переводы" → "По номеру телефона"</li>
+                              <li>3. Введите номер: +7 (912) 664-79-18</li>
+                              <li>4. Укажите сумму: {topupAmount} ₽</li>
+                              <li>5. В комментарии напишите: Пополнение баланса #{user.id}</li>
+                              <li>6. Подтвердите перевод</li>
+                            </ol>
+                          </div>
+                          <div className="bg-yellow-50 border border-yellow-200 rounded p-2">
+                            <p className="text-xs text-yellow-800">
+                              ⚠️ Баланс пополнится автоматически в течение 5-10 минут после перевода
+                            </p>
+                          </div>
+                        </div>
+                      )}
+                      
                       <Button
                         onClick={handleTopup}
                         className="w-full bg-green-600 hover:bg-green-700"
@@ -207,6 +254,11 @@ export default function Profile() {
                           <>
                             <Icon name="Loader2" size={16} className="mr-2 animate-spin" />
                             Обработка...
+                          </>
+                        ) : paymentMethod === 'tbank' ? (
+                          <>
+                            <Icon name="Phone" size={16} className="mr-2" />
+                            Перевести {topupAmount} ₽ в Т-Банк
                           </>
                         ) : (
                           <>
