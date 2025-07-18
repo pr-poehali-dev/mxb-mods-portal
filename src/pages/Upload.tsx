@@ -272,7 +272,7 @@ export default function Upload() {
                         </div>
                         <p className="text-sm text-blue-700 mb-3">
                           Пользователи смогут скачать мод только после оплаты.
-                          Вы получите 70% от стоимости, 30% — комиссия сервиса.
+                          Вы получите 90% от стоимости, 10% — комиссия платформы.
                         </p>
                         <div className="space-y-2">
                           <Label htmlFor="price">Цена мода (₽)</Label>
@@ -300,7 +300,7 @@ export default function Upload() {
                         </div>
                         <p className="text-sm text-purple-700 mb-3">
                           Мод бесплатен, но пользователи могут поддержать вас донатом.
-                          Вы получите 85% от суммы доната, 15% — комиссия сервиса.
+                          Вы получите 90% от суммы доната, 10% — комиссия платформы.
                         </p>
                         <div className="space-y-2">
                           <Label htmlFor="minDonation">Минимальная сумма доната (₽)</Label>

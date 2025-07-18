@@ -35,28 +35,15 @@ export function calculatePaymentDistribution(
   amount: number, 
   type: 'paid' | 'donation'
 ): PaymentDistribution {
-  if (type === 'paid') {
-    const platformFee = amount * PLATFORM_CONFIG.commissionRate; // 10%
-    const authorEarnings = amount * PLATFORM_CONFIG.authorCommissionRate; // 70%
-    const serviceFee = amount - platformFee - authorEarnings; // 20%
-    
-    return {
-      platformFee,
-      authorEarnings,
-      serviceFee
-    };
-  } else {
-    // Для донатов
-    const authorEarnings = amount * PLATFORM_CONFIG.donationCommissionRate; // 85%
-    const platformFee = amount * PLATFORM_CONFIG.commissionRate; // 10%
-    const serviceFee = amount - platformFee - authorEarnings; // 5%
-    
-    return {
-      platformFee,
-      authorEarnings,
-      serviceFee
-    };
-  }
+  const platformFee = amount * PLATFORM_CONFIG.commissionRate; // 10%
+  const authorEarnings = amount - platformFee; // 90%
+  const serviceFee = 0; // Убираем комиссию сервиса
+  
+  return {
+    platformFee,
+    authorEarnings,
+    serviceFee
+  };
 }
 
 export async function processPurchase(purchase: PurchaseDetails): Promise<void> {
@@ -76,7 +63,6 @@ export async function processPurchase(purchase: PurchaseDetails): Promise<void> 
   console.log('=== РАСПРЕДЕЛЕНИЕ СРЕДСТВ ===');
   console.log(`Владелец платформы (${PLATFORM_CONFIG.ownerPhoneNumber}): ${distribution.platformFee} ₽`);
   console.log(`Автор: ${distribution.authorEarnings} ₽`);
-  console.log(`Комиссия сервиса: ${distribution.serviceFee} ₽`);
   
   // Здесь была бы интеграция с реальной платежной системой
   // Для демонстрации используем симуляцию

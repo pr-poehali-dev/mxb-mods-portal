@@ -158,12 +158,6 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({ isOpen, onClose, mod }) =
                     {distribution.platformFee.toFixed(0)} ₽
                   </span>
                 </div>
-                <div className="flex justify-between">
-                  <span>Комиссия сервиса:</span>
-                  <span className="font-semibold text-gray-600">
-                    {distribution.serviceFee.toFixed(0)} ₽
-                  </span>
-                </div>
               </div>
             </div>
           )}
@@ -178,7 +172,7 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({ isOpen, onClose, mod }) =
                 </p>
                 <p className="text-xs text-orange-700">
                   10% от суммы автоматически переводится на номер +7 (912) 664-79-18 
-                  как комиссия платформы. Остальные средства поступают автору.
+                  как комиссия платформы. Остальные 90% поступают автору.
                 </p>
               </div>
             </div>
